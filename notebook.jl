@@ -40,14 +40,6 @@ TableOfContents()
 # ╔═╡ a1f06b5e-bfef-4f21-95b5-67b46623983a
 ChooseDisplayMode()
 
-# ╔═╡ bb48c0a7-352c-422f-bdd2-7ed7baa0e1db
-md"## Slides Availability
-**go.epfl.ch/EOSAM**
-"
-
-# ╔═╡ 708d5cce-4fd0-4c48-92bc-47bd7f20e486
-simshow(select_region(qrcode("https://go.epfl.ch/EOSAM", eclevel=High(), width=0), M=1.3))
-
 # ╔═╡ 6907dc0e-21c0-4de7-85c3-fe5030d139c2
 md"""# 0. SwissVAMyKnife.jl: an open-source package for tomographic volumetric additive manufacturing
 
@@ -65,6 +57,14 @@ md"""# 0. SwissVAMyKnife.jl: an open-source package for tomographic volumetric a
 
 	In this work we describe how a wave optical framework allows to optically print smaller feature sizes. The optimization framework is written in the programming language Julia and allows for high-performance optimization of ray or wave optical based patterns for volumetric additive manufacturing.
 """
+
+# ╔═╡ 4f4ac3cb-5f00-4338-bd4d-24aa7277a849
+md"### Slides Availability
+**go.epfl.ch/EOSAM**
+"
+
+# ╔═╡ 708d5cce-4fd0-4c48-92bc-47bd7f20e486
+simshow(select_region(qrcode("https://go.epfl.ch/EOSAM", eclevel=High(), width=0), M=1.3))
 
 # ╔═╡ b595a0be-9f3a-431b-af4b-1093ca1597d2
 urldownload("https://upload.wikimedia.org/wikipedia/commons/e/e2/EPFL_campus_2017.jpg")
@@ -121,8 +121,7 @@ Where  $\omega=(\cos \theta, \sin \theta)$ and  $\omega^{\perp}=(-\sin \theta, \
 
 The resulting object $g$ is called the sinogram and stores the projections for different angles.
 
-
-
+Note, the Radon transform is not the correct physical model because it neglects absorption.
 """
 
 # ╔═╡ 7a3c18b8-a252-4dda-aeed-e6743999f64e
@@ -176,28 +175,16 @@ The problem is, the filtered backprojection results in negative projection inten
 where $\omega=(\cos \theta, \sin \theta)$.
 """
 
-# ╔═╡ fa732d6c-be8f-4cbe-afe9-627887020627
-julia_logo_b = backproject(sinogram_j, angles);
-
 # ╔═╡ 53296600-c09e-41f7-9d35-4cf04cf56a81
-md"## Our Printer performs a physical backprojection!"
+md"## Our Printer performs a physical backprojection!
+But if you ignore absporption, things go wrong!
+"
+
+# ╔═╡ fa732d6c-be8f-4cbe-afe9-627887020627
+julia_logo_b = backproject(sinogram_j, angles, μ=0.01);
 
 # ╔═╡ 697ba854-cef4-45c0-9d18-23c7847c1f8b
 simshow(julia_logo_b, cmap=:gray)
-
-# ╔═╡ 177ef1a0-038c-4a50-ae69-dd18f8027ae4
-md"### Sharp Julia with Filtered Backprojection
-"
-
-# ╔═╡ 724689b7-54a6-4f51-89c8-1b249db54fcf
-simshow(backproject_filtered(sinogram_j, angles), cmap=:gray)
-
-# ╔═╡ b69e4926-586b-4024-9396-c22ec4deb226
-md"""### Problem
-The filtered backprojection introduces negative projection patterns.
-And negative intensities are not possible with a single laser.
-
-"""
 
 # ╔═╡ 447d4078-d407-4f27-b10a-0d17c4ec1a1a
 md"## Resin has a threshold tolerance
@@ -255,7 +242,7 @@ What we had to create:
 
 
 As a rough estimate, we optimize patterns of size $1024 \times 768$ for $1000$ angles. That is almost a billion variables.
-Further, the 3D Radon transform has a computational complexity of $\mathcal{O}(N^3 \times N_\text{angles})$ where $N$ is the discretization of the volume.
+Further, the 3D backprojection has a computational complexity of $\mathcal{O}(N^3 \times N_\text{angles})$ where $N$ is the discretization of the volume.
 So pattern optimization for TVAM is a very heavy optimization problem.
 
 "
@@ -347,6 +334,9 @@ Intensity distribution -- after threshold ------- target ------------------ diff
 
 # ╔═╡ 7cc3054e-8b0f-49e6-911c-f633d952aeb8
 [simshow(Array(printed_intensity_vial[:, :, slice2]), set_one=false, cmap=:turbo) simshow(ones((size(target, 1), 5))) simshow(thresh4 .< Array(printed_intensity_vial[:, :, slice2])) simshow(ones((size(target, 1), 5))) simshow(Array(target[:, :, slice2]))  simshow(ones((size(target, 1), 5))) simshow(Array(togoc(target)[:, :, slice2] .!= (thresh4 .< (printed_intensity_vial[:, :, slice2]))))]
+
+# ╔═╡ 648c03aa-06b6-4e86-b844-0733795c60f2
+simshow(Array(backproject(patterns_vial, angles2))[:, :, 35])
 
 # ╔═╡ a61091a6-bd57-4e69-ae30-823ea8a38715
 md"### Analyze Patterns"
@@ -483,7 +473,7 @@ Zygote = "~0.6.70"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.10.4"
+julia_version = "1.10.5"
 manifest_format = "2.0"
 project_hash = "f1683e004523526782ac21ed6ec0ef15a9aa6dc1"
 
@@ -2711,7 +2701,7 @@ version = "0.15.2+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+1"
+version = "5.11.0+0"
 
 [[deps.libdecor_jll]]
 deps = ["Artifacts", "Dbus_jll", "JLLWrappers", "Libdl", "Libglvnd_jll", "Pango_jll", "Wayland_jll", "xkbcommon_jll"]
@@ -2786,9 +2776,9 @@ version = "1.4.1+1"
 # ╠═5ac9be06-63ac-4a82-a747-1b409d5ae51a
 # ╠═199f2467-04a1-4774-9728-8a9ca44d6d88
 # ╟─a1f06b5e-bfef-4f21-95b5-67b46623983a
-# ╟─bb48c0a7-352c-422f-bdd2-7ed7baa0e1db
-# ╟─708d5cce-4fd0-4c48-92bc-47bd7f20e486
 # ╟─6907dc0e-21c0-4de7-85c3-fe5030d139c2
+# ╟─4f4ac3cb-5f00-4338-bd4d-24aa7277a849
+# ╟─708d5cce-4fd0-4c48-92bc-47bd7f20e486
 # ╟─b595a0be-9f3a-431b-af4b-1093ca1597d2
 # ╟─27d5c3e5-139f-4830-a569-b41cf0e954b9
 # ╟─f75e0d3a-8dad-488d-87e4-b2c989fe0033
@@ -2806,12 +2796,9 @@ version = "1.4.1+1"
 # ╟─3956c102-8dd7-4901-a4e2-0b7988640194
 # ╟─6da1e762-70bb-42bd-b968-17e5c878f708
 # ╟─40426385-5fc7-42ad-8626-468beca767ea
-# ╠═fa732d6c-be8f-4cbe-afe9-627887020627
 # ╟─53296600-c09e-41f7-9d35-4cf04cf56a81
-# ╟─697ba854-cef4-45c0-9d18-23c7847c1f8b
-# ╟─177ef1a0-038c-4a50-ae69-dd18f8027ae4
-# ╟─724689b7-54a6-4f51-89c8-1b249db54fcf
-# ╟─b69e4926-586b-4024-9396-c22ec4deb226
+# ╠═fa732d6c-be8f-4cbe-afe9-627887020627
+# ╠═697ba854-cef4-45c0-9d18-23c7847c1f8b
 # ╟─447d4078-d407-4f27-b10a-0d17c4ec1a1a
 # ╟─e4d22509-fc71-4727-a49e-38aa0a195655
 # ╟─f1192a2a-f822-44ab-8226-52545f1ac6c5
@@ -2840,6 +2827,7 @@ version = "1.4.1+1"
 # ╟─215d7e6b-53ca-4d94-bdde-7cb6ee3554c7
 # ╟─6701af21-882e-4683-a02b-05c473eff995
 # ╟─7cc3054e-8b0f-49e6-911c-f633d952aeb8
+# ╠═648c03aa-06b6-4e86-b844-0733795c60f2
 # ╟─a61091a6-bd57-4e69-ae30-823ea8a38715
 # ╟─29530df7-37ec-4148-a75a-6386022c300e
 # ╟─7164b463-8a83-4717-a736-94031ef41439
