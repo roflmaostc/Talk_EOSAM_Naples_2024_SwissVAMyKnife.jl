@@ -91,18 +91,19 @@ md"### General Setup
 * the light modulator modulates grayscale images
 * those images are re-imaged into the rotating resin
 * the images are changed for different rotation angles
-* mathematically this is reverse Computed Tomography (CT)
+* conceptually this is reverse Computed Tomography (CT)
 
 
 ### Applications
 
-* Bioprinting
+* Bioprinting -> fasting printing -> less stressful for cells
 * Optical components
 
 
 ### References
-* *Loterie, D., Delrot, P. & Moser, C. High-resolution tomographic volumetric additive manufacturing. Nat Commun 11, 852 (2020).*
-* *Kelly, B. E. et al. Volumetric additive manufacturing via tomographic reconstruction. Science 363, 1075–1079 (2019).*
+* *Loterie, D., Delrot, P. & Moser, C.\" High-resolution tomographic volumetric additive manufacturing.\" Nat Commun 11, 852 (2020).*
+* *Kelly, B. E. et al. \"Volumetric additive manufacturing via tomographic reconstruction.\" Science 363, 1075–1079 (2019).*
+* *Webber, Daniel, et al. \"Micro-optics fabrication using blurred tomography.\" Optica 11.5 (2024): 665-672.*
 
 
 "
@@ -177,7 +178,7 @@ where $\omega=(\cos \theta, \sin \theta)$.
 
 # ╔═╡ 53296600-c09e-41f7-9d35-4cf04cf56a81
 md"## Our Printer performs a physical backprojection!
-But if you ignore absporption, things go wrong!
+But if you ignore absporption, things can go wrong!
 "
 
 # ╔═╡ fa732d6c-be8f-4cbe-afe9-627887020627
@@ -334,9 +335,6 @@ Intensity distribution -- after threshold ------- target ------------------ diff
 
 # ╔═╡ 7cc3054e-8b0f-49e6-911c-f633d952aeb8
 [simshow(Array(printed_intensity_vial[:, :, slice2]), set_one=false, cmap=:turbo) simshow(ones((size(target, 1), 5))) simshow(thresh4 .< Array(printed_intensity_vial[:, :, slice2])) simshow(ones((size(target, 1), 5))) simshow(Array(target[:, :, slice2]))  simshow(ones((size(target, 1), 5))) simshow(Array(togoc(target)[:, :, slice2] .!= (thresh4 .< (printed_intensity_vial[:, :, slice2]))))]
-
-# ╔═╡ 648c03aa-06b6-4e86-b844-0733795c60f2
-simshow(Array(backproject(patterns_vial, angles2))[:, :, 35])
 
 # ╔═╡ a61091a6-bd57-4e69-ae30-823ea8a38715
 md"### Analyze Patterns"
@@ -2827,7 +2825,6 @@ version = "1.4.1+1"
 # ╟─215d7e6b-53ca-4d94-bdde-7cb6ee3554c7
 # ╟─6701af21-882e-4683-a02b-05c473eff995
 # ╟─7cc3054e-8b0f-49e6-911c-f633d952aeb8
-# ╠═648c03aa-06b6-4e86-b844-0733795c60f2
 # ╟─a61091a6-bd57-4e69-ae30-823ea8a38715
 # ╟─29530df7-37ec-4148-a75a-6386022c300e
 # ╟─7164b463-8a83-4717-a736-94031ef41439
