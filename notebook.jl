@@ -96,7 +96,7 @@ md"### General Setup
 
 ### Applications
 
-* Bioprinting -> fasting printing -> less stressful for cells
+* Bioprinting -> fast printing -> less stressful for cells
 * Optical components
 
 
@@ -182,7 +182,7 @@ But if you ignore absporption, things can go wrong!
 "
 
 # ╔═╡ fa732d6c-be8f-4cbe-afe9-627887020627
-julia_logo_b = backproject(sinogram_j, angles, μ=0.01);
+julia_logo_b = backproject(sinogram_j, angles, μ=0.00);
 
 # ╔═╡ 697ba854-cef4-45c0-9d18-23c7847c1f8b
 simshow(julia_logo_b, cmap=:gray)
@@ -222,14 +222,14 @@ $$\mathcal{L} = \underbrace{\sum_{v \,\in\,\text{object}} |\text{ReLu}(T_U - I_v
 """
 
 # ╔═╡ 73a8a705-6081-4551-8c96-f4504e7b9f6d
-md"# 4. Summary TVAM
-"
+#md"# 4. Summary TVAM
+#"
 
 # ╔═╡ 7b1e3bad-9ff0-4833-93b1-3f9b4e4cd61d
-select_region(load("general.png"), M=1.0)
+#select_region(load("general.png"), M=1.0)
 
 # ╔═╡ a2956b5b-99e7-467d-a60e-552006808800
-md"# 5. Julia Solutions
+md"# 4. Julia Solutions
 
 What we needed:
 
@@ -328,13 +328,13 @@ plot_intensity_histogram(target, printed_intensity_vial, loss.thresholds)
 md"Choose threshold for image: $(@bind thresh4 PlutoUI.Slider(0:0.01:1, show_value=true, default=0.7))"
 
 # ╔═╡ 6701af21-882e-4683-a02b-05c473eff995
-md"z slice $(@bind slice2 PlutoUI.Slider(axes(target, 3), show_value=true, default=77))
+md"z slice $(@bind slice2 PlutoUI.Slider(axes(target, 3), show_value=true, default=70))
 
 Intensity distribution -- after threshold ------- target ------------------ difference
 "
 
 # ╔═╡ 7cc3054e-8b0f-49e6-911c-f633d952aeb8
-[simshow(Array(printed_intensity_vial[:, :, slice2]), set_one=false, cmap=:turbo) simshow(ones((size(target, 1), 5))) simshow(thresh4 .< Array(printed_intensity_vial[:, :, slice2])) simshow(ones((size(target, 1), 5))) simshow(Array(target[:, :, slice2]))  simshow(ones((size(target, 1), 5))) simshow(Array(togoc(target)[:, :, slice2] .!= (thresh4 .< (printed_intensity_vial[:, :, slice2]))))]
+[simshow(Array(printed_intensity_vial[slice2, :, :]'), set_one=false, cmap=:turbo) simshow(ones((size(target, 3), 15)))   simshow(thresh4 .< Array(printed_intensity_vial[slice2, :, :]')) simshow(ones((size(target, 3), 15)))  simshow(Array(target[slice2, :, :]')) simshow(ones((size(target, 3), 15)))  simshow(Array(togoc(target)[slice2, :, :]' .!= (thresh4 .< (printed_intensity_vial[slice2, :, :]'))))]
 
 # ╔═╡ a61091a6-bd57-4e69-ae30-823ea8a38715
 md"### Analyze Patterns"
@@ -392,7 +392,7 @@ hms[1]
 hms[2]
 
 # ╔═╡ 0ab48aad-8a16-40d8-b980-7d6e083ea923
-md"# 6. Wave Optics for TVAM
+md"# 5. Wave Optics for TVAM
 
 If we want to print small objects, ray optics is not a sufficient description anymore.
 
@@ -407,7 +407,7 @@ We simulated volumes of $550^3$ voxels. The ray optical runtime was ~5mins for t
 load("wave_vs_ray.png")
 
 # ╔═╡ 3943b1f3-2779-47b7-847f-8ebe0a89fd85
-md"# 7. Summary
+md"# 6. Summary
 Tomographic Volumetric Additive Manufacturing is an emerging rapid 3D printing technique.
 
 With our packages
@@ -415,6 +415,8 @@ With our packages
 * [RadonKA.jl](https://github.com/roflmaostc/RadonKA.jl)
 * [WaveOpticsPropagation.jl](https://github.com/JuliaPhysics/WaveOpticsPropagation.jl/)
 
+
+More material under: [go.epfl.ch/EOSAM](https://go.epfl.ch/EOSAM)
 "
 
 # ╔═╡ 6aa0de0f-b6a4-4180-81cd-63dff002cf7b
@@ -2824,7 +2826,7 @@ version = "1.4.1+1"
 # ╟─857dc8d5-e96c-4ac5-a2f2-bab07fca8542
 # ╟─215d7e6b-53ca-4d94-bdde-7cb6ee3554c7
 # ╟─6701af21-882e-4683-a02b-05c473eff995
-# ╟─7cc3054e-8b0f-49e6-911c-f633d952aeb8
+# ╠═7cc3054e-8b0f-49e6-911c-f633d952aeb8
 # ╟─a61091a6-bd57-4e69-ae30-823ea8a38715
 # ╟─29530df7-37ec-4148-a75a-6386022c300e
 # ╟─7164b463-8a83-4717-a736-94031ef41439
