@@ -328,7 +328,7 @@ plot_intensity_histogram(target, printed_intensity_vial, loss.thresholds)
 md"Choose threshold for image: $(@bind thresh4 PlutoUI.Slider(0:0.01:1, show_value=true, default=0.7))"
 
 # ╔═╡ 6701af21-882e-4683-a02b-05c473eff995
-md"z slice $(@bind slice2 PlutoUI.Slider(axes(target, 3), show_value=true, default=70))
+md"z slice $(@bind slice2 PlutoUI.Slider(axes(target, 1), show_value=true, default=70))
 
 Intensity distribution -- after threshold ------- target ------------------ difference
 "
@@ -416,7 +416,12 @@ With our packages
 * [WaveOpticsPropagation.jl](https://github.com/JuliaPhysics/WaveOpticsPropagation.jl/)
 
 
+
 More material under: [go.epfl.ch/EOSAM](https://go.epfl.ch/EOSAM)
+
+See also the talks of:
+* María Isabel Álvarez Castaño: *Tomographic volumetric additive manufacturing by holographic projections*
+* Viola Sgarminato: *Tomographic volumetric bioprinting for 3D in vitro modeling of the exocrine pancreatic unit*
 "
 
 # ╔═╡ 6aa0de0f-b6a4-4180-81cd-63dff002cf7b
@@ -2826,7 +2831,7 @@ version = "1.4.1+1"
 # ╟─857dc8d5-e96c-4ac5-a2f2-bab07fca8542
 # ╟─215d7e6b-53ca-4d94-bdde-7cb6ee3554c7
 # ╟─6701af21-882e-4683-a02b-05c473eff995
-# ╠═7cc3054e-8b0f-49e6-911c-f633d952aeb8
+# ╟─7cc3054e-8b0f-49e6-911c-f633d952aeb8
 # ╟─a61091a6-bd57-4e69-ae30-823ea8a38715
 # ╟─29530df7-37ec-4148-a75a-6386022c300e
 # ╟─7164b463-8a83-4717-a736-94031ef41439
